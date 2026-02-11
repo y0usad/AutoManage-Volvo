@@ -38,8 +38,12 @@ builder.Services.AddAuthentication(options =>
     };
 });
 
-// Adicionar controllers
-builder.Services.AddControllers();
+// Adicionar controllers com configuração JSON para evitar ciclos de referência
+builder.Services.AddControllers()
+    .AddJsonOptions(options =>
+    {
+        options.JsonSerializerOptions.ReferenceHandler = System.Text.Json.Serialization.ReferenceHandler.IgnoreCycles;
+    });
 
 // Configurar Swagger/OpenAPI
 builder.Services.AddEndpointsApiExplorer();
